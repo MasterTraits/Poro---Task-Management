@@ -1,34 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react'
+import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "@/components/theme-provider"
+import { auth } from '@/firebase'
+import { onAuthStateChanged } from 'firebase/auth';
+
+// Landing Page
+import MainLayout from '@/pages/NavFixed.jsx'
+import LandingPage from '@/pages/LandingPage.jsx'
+
+// Login & Register 
+import LoginPage from '@/pages/LoginPage.jsx'
+import RegisterPage from '@/pages/RegisterPage.jsx'
+
+// Utility
+import Utility from '@/pages/Utility.jsx'
+import History from '@/pages/History.jsx'
+
+// Error
+import ErrorPage from "@/pages/ErrorPage.jsx"
+
+// For authentication
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  useEffect(() => {
+    const subscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        setIsAuthenticated(true);
+      } else {  
+        setIsAuthenticated(false);
+      }
+    });
 
+    return () =>  subscribe();
+  }, []);
+  
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ThemeProvider>
+      <BrowserRouter>
+        {/* {!isAuthenticated && <Navigate to="/register"/>} */}
+      <Routes>  
+        <Route path="/" element={<MainLayout/>}/>
+        <Route path="/home" element={<LandingPage/>}/>
+        <Route path="/login" element={<LoginPage/>}/>
+        <Route path="/register" element={<RegisterPage/>}/>
+        <Route path="/utility" element={<Utility/>}/>
+        <Route path="/History" element={<History/>}/>
+        <Route path="*" element={<ErrorPage/>}/>
+      </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 
