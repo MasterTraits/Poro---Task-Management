@@ -19,7 +19,7 @@ const ToDoList = ({name, task}) => {
 
   return (
     <div className='m-5 rounded-2xl'>
-      <div onClick={()=> setShow(!show)} className='flex justify-between gap-2 h-10 px-4 mb-3 bg-stone-900 rounded-2xl items-center'>
+      <div onClick={()=> setShow(!show)} className='flex justify-between gap-2 h-10 px-4 mb-3 bg-stone-[#101000] rounded-2xl items-center'>
         <span className='font-semibold'>{name}</span>
         <div className='flex'>
           {!show ? (
@@ -35,7 +35,7 @@ const ToDoList = ({name, task}) => {
       <div className='max-h-64 bg-stone-900 rounded-2xl overflow-y-auto overflow-x-hidden'>
         {/* Put a map here to repeat */}
         <div className='group flex items-center justify-between px-3 h-10 mx-2 my-3 bg-stone-800 hover:bg-indigo-800 rounded-xl'>
-          <p className='w-40 truncate'>Content here is limited</p>
+          <p className='w-40 truncate'>Task name</p>
           <div className='flex gap-1'>
           <img src={Check} alt='Check' className='invisible group-hover:visible hover:[filter:_invert(53%)_sepia(79%)_saturate(2470%)_hue-rotate(94deg)_brightness(103%)_contrast(106%)]'/>
           <Dialog>

@@ -26,7 +26,7 @@ import User from '@/assets/User_circle.png'
 
 const UtilityNav = ({timer}) => {
   return (
-    <header className='flex items-center justify-between h-12 my-5 mx-6 px-5 border-white border-[1px] rounded-3xl '>
+    <header className='flex items-center justify-between h-12 my-6 mx-7 px-5 border-white border-[1px] rounded-3xl '>
       <div className='flex items-center gap-5'>
         <img src={menu} onClick={()=> setShow(!show)} className='h-3.5 '/>
         <span>Poro</span>
@@ -53,7 +53,7 @@ const UtilityNav = ({timer}) => {
       </div>
       <div className='flex gap-5 items-center'>
         <Button className="h-7 bg-indigo-600 text-white">Automate Tasks</Button>
-        <Button className="h-7 ">Current Date</Button>
+        <Button className="h-7 ">(Timer is placed here)</Button>
       </div>
       <nav className='flex gap-3 items-center'>
         <Link to="/home"><img src={Home}/></Link>  
