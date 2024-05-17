@@ -19,7 +19,10 @@ const ToDoList = ({name, task}) => {
 
   return (
     <div className='m-5 rounded-2xl'>
-      <div onClick={()=> setShow(!show)} className='flex justify-between gap-2 h-10 px-4 mb-3 bg-stone-[#101000] rounded-2xl items-center'>
+      <div 
+      onClick={()=> setShow(!show)} 
+      className='flex justify-between gap-2 h-10 px-4 mb-3 bg-stone-[#101000] rounded-2xl items-center'
+      >
         <span className='font-semibold'>{name}</span>
         <div className='flex'>
           {!show ? (
