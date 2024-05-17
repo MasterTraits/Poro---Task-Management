@@ -69,7 +69,7 @@ const UtilityNav = ({timer}) => {
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
-      </Dialog>
+        </Dialog>
 
         <Link to=""><img src={User}/></Link>
         <Link to="/login"><Button className='h-7'>Login</Button></Link>
