@@ -91,14 +91,13 @@ export default function Calendar() {
         breakMintue: breakMinutes,  
         repeat: repeat
       });
-  
-      // Reset the input fields
-      // setTaskName('');
-      // setHours('');
-      // setMinutes('');
-      // setBreakHours('');
-      // setBreakMinutes('');
-      // setRepeat('');
+
+      setTaskName('');
+      setHours('');
+      setMinutes('');
+      setBreakHours('');
+      setBreakMinutes('');
+      setRepeat('');
     } catch (error) {
       alert.error('Error saving data to Firestore:', error);
     }
@@ -234,6 +233,8 @@ export default function Calendar() {
 
 
       <FullCalendar
+        eventColor='#4338ca'
+        selectable={true}
         plugins={[ dayGridPlugin, timeGridPlugin ,interactionPlugin]}
         initialView='dayGridMonth'
         dateClick={handleDateClick}

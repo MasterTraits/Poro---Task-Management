@@ -1,21 +1,38 @@
-import React, { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import React, { useEffect, useState } from 'react'
+import Tasks from '@/components/Tasks'
 
-import Delete from '@/assets/Dell_fill.svg'
 import Add from '@/assets/Add_ring_fill.png'
-import Check from '@/assets/Check_fill.png'
 import ExpandDown from '@/assets/Expand_down.png'
 import ExpandUp from '@/assets/Expand_up.png'
+import { getDoc, getDocs, collection, doc } from 'firebase/firestore'
+import { auth, db } from '@/firebase'
 
-const ToDoList = ({name, task}) => {
+
+const ToDoList = ({name}) => {
   const [show, setShow] = useState(false)
+  const [subcollectionData, setSubcollectionData] = useState([])
+
+  // useEffect(()=> {
+    const obtainData = async () => {
+      try {
+        const currentUser = auth.currentUser;
+        const userUID = auth.currentUser.uid
+        const docRef = await getDocs(collection(db, "Poro-work-database", "sample", "facets"));
+        const subDocRef = docRef.docs.map((doc) => ({...doc.data(), id: doc.id}));
+        // docRef.forEach((doc) => {
+        //   // doc.data() is never undefined for query doc snapshots
+        //   console.log(doc.id, " => ", ...doc.data());
+        // });
+    
+        setSubcollectionData(subDocRef)
+        console.log(subDocRef)
+      } catch (error) {
+        console.log("does not show bro")
+      }
+    }
+    // obtainData();
+  // }, [])
+  
 
   return (
     <div className='m-5 rounded-2xl'>
@@ -34,32 +51,15 @@ const ToDoList = ({name, task}) => {
           <img src={!show ? (ExpandUp) : (ExpandDown)} onClick={()=> setShow(!show)} className='[filter:brightness(300%)]'/>
         </div> 
       </div>
-      {!show ? (
-      <div className='max-h-64 bg-stone-900 rounded-2xl overflow-y-auto overflow-x-hidden'>
-        {/* Put a map here to repeat */}
-        <div className='group flex items-center justify-between px-3 h-10 mx-2 my-3 bg-stone-800 hover:bg-indigo-800 rounded-xl'>
-          <p className='w-40 truncate'>{task}</p>
-          <div className='flex gap-1'>
-          <img src={Check} alt='Check' className='invisible group-hover:visible hover:[filter:_invert(53%)_sepia(79%)_saturate(2470%)_hue-rotate(94deg)_brightness(103%)_contrast(106%)]'/>
-          <Dialog>
-            <DialogTrigger><img src={Delete} alt='delete' className='invisible group-hover:visible hover:[filter:_invert(13%)_sepia(65%)_saturate(3066%)_hue-rotate(351deg)_brightness(93%)_contrast(93%)]'/></DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Are you absolutely sure?</DialogTitle>
-                <DialogDescription>
-                  This action cannot be undone. This will permanently delete your account
-                  and remove your data from our servers.
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-          </div>
-        </div>
-      </div>
+      {subcollectionData.map((index, document)=> (
+        <Tasks key={index} task={document.task} time={document.hour}/>
+      ))}
+      {/* {!show ? (
+        <Tasks/>
       ) : (
         ""
       )
-      }
+      } */}
     </div>
   )
 }
