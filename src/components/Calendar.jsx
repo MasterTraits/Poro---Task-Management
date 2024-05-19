@@ -28,8 +28,6 @@ import { Button } from '@/components/ui/button'
 import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { auth, db } from '@/firebase'
 import { format } from 'date-fns'
-import Events from '@/components/Events'
-
 
 // const events = [
 //   { title: 'Meeting', start: new Date() },
