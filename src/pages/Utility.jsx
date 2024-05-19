@@ -40,21 +40,6 @@ const Utility = () => {
   const [show, setShow] = useState(false);
   const currentUser = auth.user
 
-  useEffect(()=> {
-    const getUserName = async () => {
-      try {
-        const docRef = await getDocs(
-          collection(db, "users")
-        );
-        if (docRef.exists()) {
-          const fieldValue = docRef.data()[firstName]; // Get the specific field value
-          return fieldValue;
-        }
-      } catch (error) {
-      }
-    }
-  })
-
   return (
     <>
       <header className='flex items-center justify-between h-12 my-6 mx-7 px-5 border-white border-[1px] rounded-3xl '>

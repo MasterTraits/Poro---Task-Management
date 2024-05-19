@@ -15,6 +15,7 @@ import {
 
 const Tasks = ({task, hour, minute}) => {
   const hasHour = hour && hour.trim().length > 0;
+  console.log(task)
   const hasMinute = minute && minute.trim().length > 0;
 
   const displayTimeWithHour = (hour) => {

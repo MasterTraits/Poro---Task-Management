@@ -18,48 +18,62 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Button } from '@/components/ui/button'
 
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { auth, db } from '@/firebase'
+import { format } from 'date-fns'
+import Events from '@/components/Events'
 
 
-
-
-const events = [
-  { title: 'Meeting', start: new Date() },
-]
+// const events = [
+//   { title: 'Meeting', start: new Date() },
+// ]
 
 export default function Calendar() {
-
+  const [dialogDescription, setDialogDescription] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [dialogDescription, setDialogDescription] = useState("<>")
-  const [subcollectionId, setSubcollectionId] = useState('');
-
   const [taskName, setTaskName] = useState("");
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [breakHours, setBreakHours] = useState("");
   const [breakMinutes, setBreakMinutes] = useState("");
   const [repeat, setRepeat] = useState("");
+  const [date, setDate] = useState("");
 
   // Show scheduler
   const handleDateClick = (arg) => {
-    setDialogDescription(`${arg.dateStr}`);
+    setDate(arg.dateStr)
+    const date = format(new Date(arg.dateStr), "MMM dd, yyyy");
+    setDialogDescription(date);
     setIsDialogOpen(true);
   };
 
   // Close scheduler
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
-    setDialogDescription("<>")
   };
-  
+  const [selectedRange, setSelectedRange] = useState(null);
+  const [isStart, setIsStart] = useState("");
+  const [isEnd, setIsEnd] = useState("");
+
+  const handleDateSelect = (info) => {
+    setSelectedRange({
+      start: info.startStr,
+      end: info.endStr,
+    });
+    const startz = format(new Date(info.startStr), "MMM dd, yyyy")
+    const endz = format(new Date(info.endStr), "MMM dd, yyyy")
+    setIsStart(info.startStr) 
+    setIsEnd(info.endStr)
+    setIsDialogOpen(true);
+    setDialogDescription(startz + " - " +endz)  
+  };
 
   // Submit button
   const transferData = async () => {
@@ -71,27 +85,31 @@ export default function Calendar() {
     const userUID = currentUser.uid
     if (!currentUser) { 
       await addDoc(collection(db, "Anonymous", userUID, "facets"), {
-        task: taskName,
+        title: taskName,
         hour: hours,
         minute: minutes,
         breakHour: breakHours,
-        breakMintue: breakMinutes,  
+        breakMinute: breakMinutes,  
         repeat: repeat,
-        date: new Date()
+        date: date,
+        start: isStart,
+        end: isEnd
       });
     }
     try {
       // Save the input values to Firestore
       // use getDoc to retrieve data with docref.id or doc.id shit
       await addDoc(collection(db, "Poro-work-database", userUID, "facets"), {
-        task: taskName,
+        title: taskName,
         hour: hours,
         minute: minutes,
         breakHour: breakHours,
-        breakMintue: breakMinutes,  
+        breakMinute: breakMinutes,  
         repeat: repeat,
-        date: new Date()
-      });
+        date: date,
+        start: isStart,
+        end: isEnd
+      }); 
 
       setTaskName('');
       setHours('');
@@ -113,7 +131,22 @@ export default function Calendar() {
     breakMinutes.trim().length >= 1 ||
     repeat.trim().length >= 1;
 
-  return (
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    const fetchEventFromFirestore = async () => {
+      const userUID = auth.currentUser.uid;
+      const docRef = await getDocs(collection(db, "Poro-work-database", userUID, "facets")); 
+      const subDocRef = docRef.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setEvents(subDocRef)
+    } 
+    fetchEventFromFirestore()
+    
+  }, []);
+
+    return (
     <div>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
@@ -215,33 +248,17 @@ export default function Calendar() {
         </DialogContent>
       </Dialog>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <FullCalendar
         eventColor='#4338ca'
         selectable={true}
+        selectOverlap={true}
         plugins={[ dayGridPlugin, timeGridPlugin ,interactionPlugin]}
-        initialView='dayGridMonth'
+        initialView={`dayGridMonth`}
         dateClick={handleDateClick}
         weekends={true}
         events={events}
         eventContent={renderEventContent}
+        select={handleDateSelect}
         // eventClick={}
         headerToolbar = {{
           start: "prev,next",

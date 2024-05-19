@@ -63,8 +63,7 @@ const ToDoList = () => {
     };
     obtainData();
   }, []);
-
-
+  
   // Show scheduler
   const handleDateClick = (arg) => {
     setDialogDescription(`${arg.dateStr}`);
