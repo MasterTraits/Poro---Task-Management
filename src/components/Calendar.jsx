@@ -36,7 +36,6 @@ const events = [
 ]
 
 export default function Calendar() {
-  
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogDescription, setDialogDescription] = useState("<>")

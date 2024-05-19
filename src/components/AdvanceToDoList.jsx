@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Tasks from "@/components/Tasks";
+import AdvanceTasks from "@/components/AdvanceTasks";
 
 import Add from "@/assets/Add_ring_fill.png";
 import ExpandDown from "@/assets/Expand_down.png";
@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const ToDoList = () => {
+const AdvanceToDoList = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogDescription, setDialogDescription] = useState("<>");
   const [subcollectionId, setSubcollectionId] = useState("");
@@ -44,13 +44,13 @@ const ToDoList = () => {
 
 
   // Read GetDOCS
-  useEffect(() => {
+  // useEffect(() => {
     const obtainData = async () => {
       try {
         // const currentUser = auth.currentUser;
         const userUID = auth.currentUser.uid;
         const docRef = await getDocs(
-          collection(db, "Poro-work-database", userUID, "facets")
+          collection(db, "Poro-work-database", userUID, "advance")
         );
         const subDocRef = docRef.docs.map((doc) => ({
           id: doc.id,
@@ -62,9 +62,7 @@ const ToDoList = () => {
       }
     };
     obtainData();
-  }, []);
-
-
+  // }, []);
 
   // Show scheduler
   const handleDateClick = (arg) => {
@@ -87,7 +85,7 @@ const ToDoList = () => {
     const currentUser = auth.currentUser;
     const userUID = auth.currentUser.uid;
     if (currentUser) {
-      await addDoc(collection(db, "Anonymous", userUID, "facets"), {
+      await addDoc(collection(db, "Anonymous", userUID, "advance"), {
         task: taskName,
         hour: hours,
         minute: minutes,
@@ -99,7 +97,7 @@ const ToDoList = () => {
     try {
       // Save the input values to Firestore
       // use getDoc to retrieve data with docref.id or doc.id shit
-      await addDoc(collection(db, "Poro-work-database", userUID, "facets"), {
+      await addDoc(collection(db, "Poro-work-database", userUID, "advance"), {
         task: taskName,
         hour: hours,
         minute: minutes,
@@ -134,7 +132,7 @@ const ToDoList = () => {
         onClick={() => setShow(!show)}
         className="flex justify-between gap-2 h-10 px-4 mb-3 bg-stone-[#101000] rounded-2xl items-center"
       >
-        <span className="font-bold">Today's Tasks:</span>
+        <span className="font-bold">Future Tasks:</span>
         <div className="flex">
           {!show ? (
             <img
@@ -154,14 +152,12 @@ const ToDoList = () => {
       </div>
       {!show ? (
         subcollectionData.map((document, index) => (
-        <Tasks key={index} task={document.task} time={document.hour} />
+        <AdvanceTasks key={index} task={document.task} time={document.hour} />
       ))
       ) : (
         ""
       )
       }
-
-
 
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -292,4 +288,4 @@ const ToDoList = () => {
   );
 };
 
-export default ToDoList;
+export default AdvanceToDoList;

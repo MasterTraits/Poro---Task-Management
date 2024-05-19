@@ -5,6 +5,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import ToDoList from '@/components/ToDoList'
+import AdvanceToDoList from '@/components/AdvanceToDoList'
 import Modetoggle from '@/components/mode-toggle' 
 import Calendar from '@/components/Calendar'
 import Display from '@/components/ui/calendar'
@@ -105,8 +106,8 @@ const Utility = () => {
               <Modetoggle/>
             </div>
             <div className='flex justify-center'><Display className='border-[1px rounded-xl'/></div>
-            <ToDoList name="Today's To-do List:" time="5/18 ` 9:00 - 5:00pm" task="Learning"/>
-            <ToDoList name="Future Work:" time="5/20 ` 7:30 - 12:00pm" task="Defense"/>
+            <ToDoList/>
+            <AdvanceToDoList/>
           </ScrollArea>  
           </ResizablePanel>
           

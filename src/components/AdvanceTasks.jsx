@@ -13,7 +13,7 @@ import {
   DialogTrigger
 } from "@/components/ui/dialog"
 
-const Tasks = ({task, time}) => {
+const AdvanceTasks = ({task, time}) => {
 
   
   return (
@@ -46,4 +46,4 @@ const Tasks = ({task, time}) => {
   )
 }
 
-export default Tasks
+export default AdvanceTasks
