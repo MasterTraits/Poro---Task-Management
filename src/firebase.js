@@ -4,13 +4,13 @@ import { getAuth } from "firebase/auth";
 // Add more SDK's in the future
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBMu5e5GVS8b49CMKJMK5wwPS5MlyYcT2M",
-  authDomain: "poro-task-management.firebaseapp.com",
-  projectId: "poro-task-management",
-  storageBucket: "poro-task-management.appspot.com",
-  messagingSenderId: "601230818319",
-  appId: "1:601230818319:web:b4df31560b9a8ea03d777a",
-  measurementId: "G-KN0PKY7M6J"
+  apiKey: "AIzaSyASprOtvxsGyam2gX7kVZN1WDlhTvsw39w",
+  authDomain: "poro-8cd51.firebaseapp.com",
+  projectId: "poro-8cd51",
+  storageBucket: "poro-8cd51.appspot.com",
+  messagingSenderId: "776666214589",
+  appId: "1:776666214589:web:bfd594469aadf91bc707d4",
+  measurementId: "G-L92G7XT27E"
 };
 
 // Firebase APPS 

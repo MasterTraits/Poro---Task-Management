@@ -32,7 +32,7 @@ import { auth, db } from '@/firebase'
 
 
 const events = [
-  { title: 'Meeting', start: new Date() }
+  { title: 'Meeting', start: new Date() },
 ]
 
 export default function Calendar() {
@@ -68,15 +68,16 @@ export default function Calendar() {
     setIsDialogOpen(false);
     
     const currentUser = auth.currentUser;
-    const userUID = auth.currentUser.uid
-    if (!currentUser) {
+    const userUID = currentUser.uid
+    if (!currentUser) { 
       await addDoc(collection(db, "Anonymous", userUID, "facets"), {
         task: taskName,
         hour: hours,
         minute: minutes,
         breakHour: breakHours,
         breakMintue: breakMinutes,  
-        repeat: repeat
+        repeat: repeat,
+        date: new Date()
       });
     }
     try {
@@ -88,7 +89,8 @@ export default function Calendar() {
         minute: minutes,
         breakHour: breakHours,
         breakMintue: breakMinutes,  
-        repeat: repeat
+        repeat: repeat,
+        date: new Date()
       });
 
       setTaskName('');

@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@/components/ui/button";
+
 import {
   Dialog,
   DialogContent,
@@ -30,7 +31,6 @@ import {
 const ToDoList = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogDescription, setDialogDescription] = useState("<>");
-  const [subcollectionId, setSubcollectionId] = useState("");
 
   const [taskName, setTaskName] = useState("");
   const [hours, setHours] = useState("");
@@ -42,13 +42,13 @@ const ToDoList = () => {
   const [show, setShow] = useState(false);
   const [subcollectionData, setSubcollectionData] = useState([]);
 
-
   // Read GetDOCS
   useEffect(() => {
     const obtainData = async () => {
       try {
         // const currentUser = auth.currentUser;
-        const userUID = auth.currentUser.uid;
+        const currentUser = auth.currentUser;
+        const userUID = currentUser.uid;
         const docRef = await getDocs(
           collection(db, "Poro-work-database", userUID, "facets")
         );
@@ -63,7 +63,6 @@ const ToDoList = () => {
     };
     obtainData();
   }, []);
-
 
 
   // Show scheduler
@@ -86,7 +85,7 @@ const ToDoList = () => {
 
     const currentUser = auth.currentUser;
     const userUID = auth.currentUser.uid;
-    if (currentUser) {
+    if (!currentUser) {
       await addDoc(collection(db, "Anonymous", userUID, "facets"), {
         task: taskName,
         hour: hours,
@@ -132,7 +131,7 @@ const ToDoList = () => {
     <div className="m-5 rounded-2xl">
       <div
         onClick={() => setShow(!show)}
-        className="flex justify-between gap-2 h-10 px-4 mb-3 bg-stone-[#101000] rounded-2xl items-center"
+        className="flex justify-between gap-2 h-10 px-4 mb-3 bg-stone-900 hover:bg-stone-700 rounded-2xl items-center"
       >
         <span className="font-bold">Today's Tasks:</span>
         <div className="flex">
@@ -154,15 +153,12 @@ const ToDoList = () => {
       </div>
       {!show ? (
         subcollectionData.map((document, index) => (
-        <Tasks key={index} task={document.task} time={document.hour} />
+        <Tasks key={index} task={document.task} hour={document.hour} minute={document.minute}  />
       ))
       ) : (
         ""
       )
       }
-
-
-
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>

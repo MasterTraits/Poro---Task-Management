@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   ResizableHandle,
   ResizablePanel,
@@ -33,10 +33,27 @@ import Home from '@/assets/Home_fill.png'
 import Share from '@/assets/Send_fill.png'
 import Settings from '@/assets/Setting_fill.png'
 import User from '@/assets/User_circle.png'
-
+import { auth } from '@/firebase'
+import { getDocs, collection } from 'firebase/firestore' 
 
 const Utility = () => {
   const [show, setShow] = useState(false);
+  const currentUser = auth.user
+
+  useEffect(()=> {
+    const getUserName = async () => {
+      try {
+        const docRef = await getDocs(
+          collection(db, "users")
+        );
+        if (docRef.exists()) {
+          const fieldValue = docRef.data()[firstName]; // Get the specific field value
+          return fieldValue;
+        }
+      } catch (error) {
+      }
+    }
+  })
 
   return (
     <>
@@ -64,7 +81,7 @@ const Utility = () => {
             <SelectItem value="system">Month</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+      </div>  
       <div className='flex gap-5 items-center'>
         <Button className="h-7 bg-indigo-600 text-white">Automate Tasks</Button>
         <Button className="h-7 ">(Timer is placed here)</Button>
@@ -85,9 +102,15 @@ const Utility = () => {
         </DialogContent>
         </Dialog>
 
-        <Link to=""><img src={User}/></Link>
-        <Link to="/login"><Button className='h-7'>Login</Button></Link>
-        <Link to="/register"><Button className='h-7 border-[1px] bg-transparent border-white text-white'>Sign-up</Button></Link>
+        {!currentUser ? (
+          <Link to=""><img src={User}/></Link>
+        ) : (
+          <div className='flex gap-2'>
+          <Link to="/login"><Button className='h-7'>Login</Button></Link>
+          <Link to="/register"><Button className='h-7 border-[1px] bg-transparent border-white text-white'>Sign-up</Button></Link>
+          </div>
+        )}
+   
       </nav>
     </header>
 

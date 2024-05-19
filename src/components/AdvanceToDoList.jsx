@@ -44,7 +44,7 @@ const AdvanceToDoList = () => {
 
 
   // Read GetDOCS
-  // useEffect(() => {
+  useEffect(() => {
     const obtainData = async () => {
       try {
         // const currentUser = auth.currentUser;
@@ -62,7 +62,7 @@ const AdvanceToDoList = () => {
       }
     };
     obtainData();
-  // }, []);
+  }, []);
 
   // Show scheduler
   const handleDateClick = (arg) => {
@@ -83,7 +83,7 @@ const AdvanceToDoList = () => {
     setIsDialogOpen(false);
 
     const currentUser = auth.currentUser;
-    const userUID = auth.currentUser.uid;
+    const userUID = currentUser.uid;
     if (currentUser) {
       await addDoc(collection(db, "Anonymous", userUID, "advance"), {
         task: taskName,
@@ -92,6 +92,7 @@ const AdvanceToDoList = () => {
         breakHour: breakHours,
         breakMintue: breakMinutes,
         repeat: repeat,
+        date: new Date()
       });
     }
     try {
@@ -104,6 +105,7 @@ const AdvanceToDoList = () => {
         breakHour: breakHours,
         breakMintue: breakMinutes,
         repeat: repeat,
+        date: new Date()
       });
 
       setTaskName("");

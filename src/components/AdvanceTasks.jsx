@@ -14,8 +14,6 @@ import {
 } from "@/components/ui/dialog"
 
 const AdvanceTasks = ({task, time}) => {
-
-  
   return (
     <div className='max-h-64 bg-stone-900 rounded-2xl overflow-y-auto overflow-x-hidden'>
         {/* Put a map here to repeat */}
